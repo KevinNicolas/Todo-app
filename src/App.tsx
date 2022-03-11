@@ -1,16 +1,10 @@
 import styled from "styled-components"
 import { MdAdd, MdOutlineClose } from 'react-icons/md'
 import { useEffect, useState } from "react"
+import { TodoList } from "./components/Todo-list"
+import { TodoInput } from "./components/Todo-input"
 
 const AppStyles = styled.div`
-  button {
-    cursor: pointer;
-    transition: transform 150ms linear;
-    &:active {
-      transform: scale(.95);
-    }
-  }
-
   .todos-container {
     --header-height: 5rem;
     
@@ -48,67 +42,15 @@ const AppStyles = styled.div`
     display: flex;
     flex-flow: column;
     gap: .5rem;
-
-    .input-container {
-      width: 100%;
-      padding: .5rem 1rem;
-      margin-bottom: 1rem;
-      display: flex;
-      flex-flow: row;
-      align-items: center;
-
-      input { 
-        width: 100%;
-        border-radius: 5px 0 0 5px;
-        padding: 0 1rem;
-        font-size: 1rem;
-        color: #333;
-      }
-
-      button { 
-        color: white;
-        width: 3rem;
-        border-radius: 0 5px 5px 0;
-      }
-
-      input, button {
-        height: 3rem;
-      }
-    }
-
-    .todo-container {
-      width: 100%;
-      min-height: 2rem;
-      border-radius: 5px;
-      height: 2.5rem;
-      background: #fefefe;
-      display: flex;
-      flex-flow: row;
-      justify-content: space-between;
-      align-items: center;
-      
-      button {
-        height: 2.5rem;
-        width: 2.5rem;
-        border-radius: 5px;
-        color: white;
-      }
-
-      span {
-        padding: 0 2rem;
-      }
-    }
   }
 `
 
 function App() {
-  const [todoInput, settodoInput] = useState<string>('')
   const [todos, settodos] = useState<string[]>([])
 
-  const addTodo = () => {
-    if (todoInput !== '') {
-      settodos([...todos, todoInput])
-      settodoInput('')
+  const addTodo = (value: string) => {
+    if (value !== '') {
+      settodos([...todos, value])
     }
   }
 
@@ -128,32 +70,13 @@ function App() {
             <h1><span className="text-primary">React</span>-todo-list</h1>
           </div>
           <div className="todos-container">
-            <div className="input-container">
-              <input
-                type="text"
-                placeholder="Todo..."
-                value={todoInput}
-                onInput={ ({ target }) => { settodoInput((target as any).value) } }
-              />
-              <button className="bg-primary" onClick={addTodo}>
-                <MdAdd size={40} />
-              </button>
-            </div>
-            {
-              todos.length > 0 ? todos.map((todo: string, index: number) => (
-                <div className="todo-container" key={index}>
-                  <span>{ todo }</span>
-                  <button 
-                    className="bg-alert"
-                    onClick={() => { removeTodo(index) }}
-                  >
-                    <MdOutlineClose size={30}/>
-                  </button>
-                </div>
-              ))
-              : <></>
-            }
-            <span>{ todos.length }{ (todos.length > 0).toString() }, [{todos.toString()}]</span>
+            <TodoInput 
+              addTodo={addTodo}
+            />
+            <TodoList 
+              todos={todos}
+              removeTodo={removeTodo}
+            />
           </div>
         </div>
       </div>

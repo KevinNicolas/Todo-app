@@ -23,6 +23,14 @@ export const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  button {
+    cursor: pointer;
+    transition: transform 150ms linear;
+    &:active {
+      transform: scale(.95);
+    }
+  }
+
   .page-container {
     width: 100vw;
     height: 100vh;
